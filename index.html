@@ -758,7 +758,7 @@ var CHECKOUT = {
 };
 
 // ===== Launch offer: 50% off until LAUNCH.end (make a discount code with the same name in Polar) =====
-var LAUNCH = { code: 'LAUNCH50', off: 0.5, end: '2027-02-25' };
+var LAUNCH = { code: 'LAUNCH50', off: 0.5, end: '2026-12-25' };
 (function () {
   if (new Date() >= new Date(LAUNCH.end + 'T23:59:59')) return;
   var b = document.querySelector('.js-launch'); if (b) b.hidden = false;

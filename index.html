@@ -328,6 +328,10 @@
   .rc-plan__badge { position: absolute; top: -12px; right: 20px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
     padding: 5px 10px; border-radius: 999px; color: #0b0d12; background: linear-gradient(90deg, var(--rc-red), var(--rc-teal)); }
   .rc-plans__note { margin: 16px 0 0; font-size: 14px; color: var(--rc-muted); }
+  .rc-steps { margin: 8px 0 0; padding-left: 22px; }
+  .rc-steps li { margin: 4px 0; }
+  .rc-plans__note p { margin: 8px 0 0; }
+  .rc-plans__note strong { color: var(--rc-text, inherit); }
   @media (max-width: 960px) { .rc-plans__cards { grid-template-columns: 1fr !important; gap: 22px !important; } }
 
   /* More features */
@@ -627,7 +631,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>
           Download free for Windows
         </a>
-        <p class="rc-plans__note">Bought Pro? Download Rclips, then open the purchase email from Polar, tap "Access purchase" and copy your license key (it starts with RCLIPS-). Paste it into the app. Each key works on one computer. Changing computers? Deactivate it yourself from the Polar customer portal, then activate it on the new one.</p>
+        <div class="rc-plans__note"><strong>After you buy Pro:</strong><ol class="rc-steps"><li>Open the purchase email from Polar and tap "Access purchase".</li><li>Copy your license key (it starts with RCLIPS-).</li><li>Download and open Rclips, then click "Upgrade to Pro".</li><li>Paste the key and click "Activate". Done.</li></ol><p>Each key works on one computer. Changing computers? Deactivate it yourself from the Polar customer portal, then activate it on the new one.</p></div>
         <div class="rc-smart">
           <strong>Windows may show a blue &ldquo;Windows protected your PC&rdquo; box.</strong>
           <p>That happens with new apps from small developers. Click <b>More info</b>, then <b>Run anyway</b>. Every update is signed and checked by Rclips before it installs, and the installer comes straight from <a href="https://github.com/rclips-updates/rclips-releases/releases" target="_blank" rel="noopener">our GitHub releases</a>.</p>

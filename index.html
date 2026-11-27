@@ -883,6 +883,7 @@ document.querySelectorAll('[data-checkout]').forEach(function (a) {
 <script>
 (function () {
   var MIN = 50;
+  var PAST = 9; // downloads of deleted old releases (v2.5.3: 9)
   function show(n) {
     if (!(n > MIN)) return;
     var txt = 'Downloaded ' + n.toLocaleString('en-US') + ' times';
@@ -892,7 +893,7 @@ document.querySelectorAll('[data-checkout]').forEach(function (a) {
   fetch('https://api.github.com/repos/rclips-updates/rclips-releases/releases?per_page=100')
     .then(function (r) { return r.ok ? r.json() : []; })
     .then(function (list) {
-      var n = 0;
+      var n = PAST;
       (list || []).forEach(function (rel) { (rel.assets || []).forEach(function (a) { if (/\.exe$/i.test(a.name)) n += a.download_count || 0; }); });
       try { sessionStorage.setItem('rc-dl', JSON.stringify({ n: n, t: Date.now() })); } catch (e) {}
       show(n);

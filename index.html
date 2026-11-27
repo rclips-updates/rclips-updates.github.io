@@ -882,23 +882,28 @@ document.querySelectorAll('[data-checkout]').forEach(function (a) {
 </script>
 <script>
 (function () {
-  var MIN = 50;
-  var PAST = 9; // downloads of deleted old releases (v2.5.3: 9)
+  // Download count = saved counts (downloads.json, keeps deleted releases) + live GitHub counts.
   function show(n) {
-    if (!(n > MIN)) return;
-    var txt = 'Downloaded ' + n.toLocaleString('en-US') + ' times';
+    if (!(n >= 10)) return;
+    var step = n < 100 ? 10 : n < 1000 ? 50 : 100;
+    var txt = (Math.floor(n / step) * step).toLocaleString('en-US') + '+ downloads';
     document.querySelectorAll('.js-dl').forEach(function (el) { el.textContent = txt; el.hidden = false; });
   }
-  try { var c = JSON.parse(sessionStorage.getItem('rc-dl') || 'null'); if (c && Date.now() - c.t < 3600000) { show(c.n); return; } } catch (e) {}
-  fetch('https://api.github.com/repos/rclips-updates/rclips-releases/releases?per_page=100')
-    .then(function (r) { return r.ok ? r.json() : []; })
-    .then(function (list) {
-      var n = PAST;
-      (list || []).forEach(function (rel) { (rel.assets || []).forEach(function (a) { if (/\.exe$/i.test(a.name)) n += a.download_count || 0; }); });
-      try { sessionStorage.setItem('rc-dl', JSON.stringify({ n: n, t: Date.now() })); } catch (e) {}
-      show(n);
-    })
-    .catch(function () {});
+  try { var c = JSON.parse(sessionStorage.getItem('rc-dl2') || 'null'); if (c && Date.now() - c.t < 3600000) { show(c.n); return; } } catch (e) {}
+  var saved = fetch('/downloads.json?x=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
+  var live = fetch('https://api.github.com/repos/rclips-updates/rclips-releases/releases?per_page=100').then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
+  Promise.all([saved, live]).then(function (res) {
+    var all = {}, n = 0;
+    Object.keys(res[0] || {}).forEach(function (k) { all[k] = +res[0][k] || 0; });
+    (res[1] || []).forEach(function (rel) {
+      var c = 0;
+      (rel.assets || []).forEach(function (a) { if (/\.exe$/i.test(a.name)) c += a.download_count || 0; });
+      all[rel.tag_name] = Math.max(all[rel.tag_name] || 0, c);
+    });
+    Object.keys(all).forEach(function (k) { n += all[k]; });
+    try { sessionStorage.setItem('rc-dl2', JSON.stringify({ n: n, t: Date.now() })); } catch (e) {}
+    show(n);
+  });
 })();
 </script>
 </body>
